@@ -219,7 +219,7 @@ input[type="password"] {
   border-radius: 30px;
   border: 1px solid #5e97d1;
   color: black;
-  top: 350px;
+  top: 370px;
   left: 20%;
   position: absolute;
   transform: translate(-50%, -50%);
@@ -257,6 +257,7 @@ h1 {
   border-radius: 2px;
   box-sizing: border-box;
 }
+
 
 .log input[type="text"],
 input[type="password"] {

@@ -3,6 +3,7 @@ const router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const emailvalidator = require("email-validator");
 // Load User model
 const User = require('../models/User');
 
@@ -17,9 +18,9 @@ router.get('/register', forwardAuthenticated, (req, res) => res.render('register
 
 // Register
 router.post('/register', (req, res) => {
-  const { required, firstname, lastname, email, password, confirmpassword } = req.body;
+  const { required, name, email, password, confirmpassword, gender} = req.body;
   let errors = [];
-  if (!required || !lastname || !firstname || !email || !password || !confirmpassword) {
+  if (!required || !gender || !name || !email || !password || !confirmpassword) {
     errors.push({ msg: 'Please enter all fields' });
   }
 
@@ -29,6 +30,10 @@ router.post('/register', (req, res) => {
 
   if (password.length < 6) {
     errors.push({ msg: 'Passwords has less length' });
+  } 
+  
+  if(!emailvalidator.validate(req.body.email)){
+    errors.push({ msg: 'Email format is wrong' });
   }
   
   console.log(req.body)
@@ -36,10 +41,10 @@ router.post('/register', (req, res) => {
     res.render('register', {
       errors,
       required,
-      firstname,
-      lastname,
+      name,
       email,
       password,
+      gender
     });
   } else {
     User.findOne({ email: email }).then(user => {
@@ -48,18 +53,19 @@ router.post('/register', (req, res) => {
         res.render('register', {
           errors,
           required,
-          firstname,
-          lastname,
+          name,
           email,
           password,
+          gender
         });
       } else {
         const newUser = new User({
-            required,
-            firstname,
-            lastname,
-            email,
-            password,
+          required,
+          name,
+          email,
+          password,
+          gender
+
         });
 
         bcrypt.genSalt(10, (err, salt) => {

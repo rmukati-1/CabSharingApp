@@ -5,11 +5,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-   firstname: {
-    type: String,
-    required: true
-   },
-   lastname: {
+   name: {
     type: String,
     required: true
    },
@@ -20,6 +16,10 @@ const UserSchema = new mongoose.Schema({
    password: {
     type: String,
      required: true
+   },
+   gender: {
+    type: String,
+    required: true
    },
    date: {
     type: Date,
