@@ -6,6 +6,7 @@ const passport = require('passport');
 const emailvalidator = require("email-validator");
 // Load User model
 const User = require('../models/User');
+const Travel = require('../models/travel');
 
 // Welcome Page
 router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
@@ -18,7 +19,7 @@ router.get('/register', forwardAuthenticated, (req, res) => res.render('register
 
 // Register
 router.post('/register', (req, res) => {
-  const { required, name, email, password, confirmpassword, gender} = req.body;
+  const { required, name, email, password, confirmpassword, gender, Hall, Room, Address, birthday, phone, profile_pic} = req.body;
   let errors = [];
   if (!required || !gender || !name || !email || !password || !confirmpassword) {
     errors.push({ msg: 'Please enter all fields' });
@@ -36,7 +37,6 @@ router.post('/register', (req, res) => {
     errors.push({ msg: 'Email format is wrong' });
   }
   
-  console.log(req.body)
   if (errors.length > 0) {
     res.render('register', {
       errors,
@@ -44,7 +44,13 @@ router.post('/register', (req, res) => {
       name,
       email,
       password,
-      gender
+      gender,
+      Hall,
+      Room,
+      Address,
+      birthday,
+      phone,
+      profile_pic
     });
   } else {
     User.findOne({ email: email }).then(user => {
@@ -56,7 +62,13 @@ router.post('/register', (req, res) => {
           name,
           email,
           password,
-          gender
+          gender,
+          Hall,
+          Room,
+          Address,
+          birthday,
+          phone,
+          profile_pic
         });
       } else {
         const newUser = new User({
@@ -64,10 +76,22 @@ router.post('/register', (req, res) => {
           name,
           email,
           password,
-          gender
+          gender,
+          Hall,
+          Room,
+          Address,
+          birthday,
+          phone,
+          profile_pic
 
         });
-
+        
+        newUser.Hall = "";
+        newUser.Room = "";
+        newUser.Address = "";
+        newUser.birthday = "";
+        newUser.phone = "";
+        newUser.profile_pic = "";
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err;
@@ -108,6 +132,12 @@ router.get('/logout', (req, res) => {
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) =>
   res.render('dashboard', {
+    user: req.user
+  })
+);
+
+router.get('/profile', ensureAuthenticated, (req, res) =>
+  res.render('profile', {
     user: req.user
   })
 );

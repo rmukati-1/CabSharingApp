@@ -21,6 +21,24 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
    },
+   Hall: {
+    type: String,
+   },
+   Room: {
+    type: String,
+   },  
+   Address: {
+    type: String,
+   },
+   birthday: {
+    type: String,
+   },
+   phone: {
+    type: String,
+   },
+   profile_pic: {
+    type: String,
+   },
    date: {
     type: Date,
     default: Date.now
