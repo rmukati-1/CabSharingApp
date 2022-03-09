@@ -4,6 +4,7 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const emailvalidator = require("email-validator");
+const validateDate = require("validate-date");
 // Load User model
 const User = require('../models/User');
 const Travel = require('../models/travel');
@@ -136,8 +137,43 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
   })
 );
 
+// Profile
 router.get('/profile', ensureAuthenticated, (req, res) =>
   res.render('profile', {
+    user: req.user
+  })
+);
+
+router.post('/profile', (req, res) => {
+  const { required, name, email, password, confirmpassword, gender, Hall, Room, Address, birthday, phone, profile_pic} = req.body;
+  let errors = [];
+  if (!gender ) {
+    errors.push({ msg: 'Please enter gender' });
+  }
+  if ( !name ) {
+    errors.push({ msg: 'Please enter gender' });
+  }
+  if (phone.length != 10) {
+    errors.push({ msg: 'Phone number is wrong' });
+  }  
+  if(!(validateDate(req.body.birthday, responseType="boolean", dateFormat="dd/mm/yyyy"))){
+    errors.push({ msg: 'Date format is wrong' });
+  }
+  if (errors.length == 0) {
+  User.findOneAndUpdate({ email: req.body.email }, req.body, { new: true }, (err, doc) => {
+      if (!err) { req.flash('success_msg', 'Successfully update'); res.redirect('/profile'); }
+  });
+} else { 
+  res.render("profile", {
+    errors,
+    user: req.body
+});
+  }
+});
+
+//Travelform
+router.get('/travelform', ensureAuthenticated, (req, res) =>
+  res.render('travelform', {
     user: req.user
   })
 );

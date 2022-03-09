@@ -11,11 +11,11 @@
 </head>
 <body>
     <div class="background_img-1">
-        <div class="header">
+        <div class="head">
             <a href="/dashboard"><img src="css/images/Cab-Sharing.svg" class="logo"></a>
             <nav>
                 <ul>
-                    <<button class="btn" id="btn2" style="padding: 15px 70px"><%= user.name %></button>
+                    <a href ="/profile"><button class="btn" id="btn2" style="padding: 15px 100px">Profile</button></a>
                 </ul>
             </nav>
             <a href="/logout"><button class="btn" id="btn1">Log out</button></a>
@@ -41,25 +41,47 @@
                 <div class="col-xl-8">
                     <!-- Account details card-->
                     <div class="card mb-4">
-                        <div class="card-header">Personal Details</div>
                         <div class="card-body">
-                            <form>
+                            <div class="card-header">Personal Details</div>
+                            <% if(locals.errors){ %> <% errors.forEach(function(error) { %>
+        <div class="alert1">
+            <span class="closebtn1" onclick="this.parentElement.style.display='none';">&times;</span>
+            <p style="font-size:15px;"> <%= error.msg %></p>
+          </div>
+        <% }); %> <% } %> <% if(success_msg != ''){ %>
+                <div class="success1">
+                    <span class="closebtn1" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <p style="font-size:15px;" > <%= success_msg %></p>
+                  </div>
+            <% } %> <% if(error_msg != ''){ %>
+                <div class="alert1">
+                    <span class="closebtn1" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <p style="font-size:15px;"> <%= error_msg %></p>
+                  </div>
+            <% } %> <% if(error != ''){ %>
+                <div class="alert1">
+                    <span class="closebtn1" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <p style="font-size:15px;"> <%= error %></p>
+                  </div>
+            <% } %> 
+                            <form action="/profile" method="POST">
+                                
                                 <!-- Form Group (username)-->
-                                <div class="mb-3">
+                                <div class="mb-3" >
                                     <label class="small mb-1" >Name</label>
-                                    <input class="form-cont" id="name" type="text" placeholder="Enter your name" value = "<%= user.name %>" >
+                                    <input class="form-cont" id="text" name="name" placeholder="Enter your name" value = "<%= user.name %>" >
                                 </div>
                                 <!-- Form Row-->
                                 <div class="row gx-3 mb-3">
                                     <!-- Form Group (first name)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputFirstName">Gender</label>
-                                        <input class="form-cont" id="inputFirstName" type="text" placeholder="Enter your gender" value=<%= user.gender %>>
+                                        <input class="form-cont" id="gender" type="text" name="gender" placeholder="Enter your gender" value=<%= user.gender %>>
                                     </div>
                                     <!-- Form Group (last name)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputLastName">Status</label>
-                                        <input class="form-cont" id="inputLastName" type="text" placeholder="Enter your Status" value=<%= user.required %>>
+                                        <input class="form-cont" id="required" type="text" name="required" placeholder="Enter your Status" value=<%= user.required %> readonly>
                                     </div>
                                 </div>
                                 <!-- Form Row        -->
@@ -67,38 +89,38 @@
                                     <!-- Form Group (organization name)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputOrgName">Hall</label>
-                                        <input class="form-cont" id="inputOrgName" type="text" placeholder="Enter your hall" >
+                                        <input class="form-cont" id="Hall" type="text" name="Hall" placeholder="Enter your hall" value="<%= user.Hall %>">
                                     </div>
                                     <!-- Form Group (location)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputLocation">Room no</label>
-                                        <input class="form-cont" id="inputLocation" type="text" placeholder="Enter your room no" >
+                                        <input class="form-cont" id="Room" type="text" name="Room" placeholder="Enter your room no" value="<%= user.Room %>">
                                     </div>
                                 </div>
                                 <!-- Form Group (email address)-->
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                    <input class="form-cont" id="inputEmailAddress" type="email" placeholder="Enter your email address" value=<%= user.email %>>
+                                    <input class="form-cont" id="email" type="text" name="email" placeholder="Enter your email address" value=<%= user.email %> readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputEmailAddress">Address</label>
-                                    <input class="form-cont" id="inputEmailAddress" type="email" placeholder="Enter your address" value="">
+                                    <input class="form-cont" id="Address" type="text" name="Address" placeholder="Enter your address" value="<%= user.Address %>">
                                 </div>
                                 <!-- Form Row-->
                                 <div class="row gx-3 mb-3">
                                     <!-- Form Group (phone number)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-cont" id="inputPhone" type="tel" placeholder="Enter your phone number" value="">
+                                        <input class="form-cont" id="phone" type="text" name="phone" placeholder="Enter your phone number" value=<%= user.phone %>>
                                     </div>
                                     <!-- Form Group (birthday)-->
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                        <input class="form-cont" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday in dd/mm/yyyy format" value="">
+                                        <input class="form-cont" id="birthday" type="text" name="birthday" placeholder="Enter your birthday in dd/mm/yyyy format" value=<%= user.birthday %>>
                                     </div>
                                 </div>
                                 <!-- Save changes button-->
-                                <button class="btn btn-primary" type="button">Update</button>
+                                <button class="btn btn-primary" type="submit">Update</button>
                             </form>
                         </div>
                     </div>

@@ -19,7 +19,8 @@
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "validate-date": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
