@@ -148,16 +148,16 @@ router.post('/profile', (req, res) => {
   const { required, name, email, password, confirmpassword, gender, Hall, Room, Address, birthday, phone, profile_pic} = req.body;
   let errors = [];
   if (!gender ) {
-    errors.push({ msg: 'Please enter gender' });
+    errors.push({ msg: 'Please enter Gender!' });
   }
   if ( !name ) {
-    errors.push({ msg: 'Please enter gender' });
+    errors.push({ msg: 'Please enter Name!' });
   }
   if (phone.length != 10) {
-    errors.push({ msg: 'Phone number is wrong' });
+    errors.push({ msg: 'Phone number is wrong!' });
   }  
   if(!(validateDate(req.body.birthday, responseType="boolean", dateFormat="dd/mm/yyyy"))){
-    errors.push({ msg: 'Date format is wrong' });
+    errors.push({ msg: 'Date format is wrong!' });
   }
   if (errors.length == 0) {
   User.findOneAndUpdate({ email: req.body.email }, req.body, { new: true }, (err, doc) => {
@@ -177,5 +177,38 @@ router.get('/travelform', ensureAuthenticated, (req, res) =>
     user: req.user
   })
 );
+
+router.post('/travelform', (req, res) => {
+  const {
+    origin, destination, Departure_date, Gender_preference, No_of_pessanger,time
+  } = req.body;
+  let errors = [];
+  if (errors.length > 0) {
+    res.render('travelform', {
+      errors,
+      origin,
+      destination,
+      Departure_date,
+      Gender_preference,
+      No_of_pessanger,
+      time
+    });
+  } else {
+
+        const newTravel = new Travel({
+        origin,
+        destination,
+        Departure_date,
+        Gender_preference,
+        No_of_pessanger,
+        time
+        });
+        
+        newTravel
+        .save()
+        res.redirect('/travelform');
+      }
+    });
+
 
 module.exports = router;
